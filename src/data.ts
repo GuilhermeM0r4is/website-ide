@@ -1,5 +1,6 @@
 export interface Profile {
   name: string;
+  siteTitle: string; // shown in the title bar and browser tab
   role: string;
   location: string;
   tagline: string;
@@ -7,19 +8,20 @@ export interface Profile {
   skills: string[];
   currentFocus: string[];
   funFacts: string[];
-  avatarUrl: string | null; // path under /public, e.g. "/avatar.jpeg"
+  avatarUrl: string | null; // filename in /public, no leading slash, e.g. "avatar.jpg"
   github: string;
   linkedin: string;
   email: string;
-  resumeUrl: string | null; // path under /public, e.g. "/resume.pdf"
+  resumeUrl: string | null; // filename in /public, no leading slash, e.g. "resume.pdf"
 }
 
 export const profile: Profile = {
   name: "Guilherme [Morais]",
+  siteTitle: "guilherme-morais.dev",
   role: "Computer Engineering Student @ IST Lisbon",
   location: "Lisbon, Portugal",
   tagline: "I turn ambitious ideas into working systems.",
-  bio: "I'm Guilherme, an 18-year-old Computer Engineering student at Instituto Superior Técnico with a deep passion for games, programming, and turning creative ideas into working systems. I'm constantly sketching new concepts and projects — many still taking shape on paper, waiting for the right moment to be built.",
+  bio: "I'm Guilherme, an 19-year-old Computer Engineering student at Instituto Superior Técnico with a deep passion for games, programming, and turning creative ideas into working systems. I'm constantly sketching new concepts and projects — many still taking shape on paper, waiting for the right moment to be built.\n\nMy toolbox spans Python, C, C++, Rust, TypeScript, Prolog (YAP Prolog), and Assembly — and I'm always adding new languages to it.",
   skills: ["Python", "C", "C++", "Rust", "TypeScript", "Prolog", "Assembly"],
   currentFocus: [
     "Developing a personal, Python-based productivity system built around custom terminal commands — the long-term goal is evolving it into a self-built AI assistant for organization and automation.",
@@ -32,7 +34,7 @@ export const profile: Profile = {
     "I love picking up new hobbies and skills just to see where they lead.",
     "When I commit to something, I stay focused until it's finished.",
   ],
-  avatarUrl: "/avatar.jpg",
+  avatarUrl: "avatar.jpg",
   github: "GuilhermeM0r4is",
   linkedin: "https://www.linkedin.com/in/guilherme-morais-6a5898418/",
   email: "guimmorais4@gmail.com",

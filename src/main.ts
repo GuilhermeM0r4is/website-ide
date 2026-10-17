@@ -35,6 +35,10 @@ function categoryColor(categoryStart: number, indexInCategory: number): string {
 }
 
 const sectionInfo = (id: SectionId) => SECTIONS.find((s) => s.id === id)!;
+
+// Vite only rewrites base-relative paths it can see statically in index.html — paths built
+// here in JS (like the avatar src) need this to still work under vite.config.ts's `base`.
+const publicUrl = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 const app = document.querySelector<HTMLDivElement>("#app")!;
 
 // open tabs behave like a real editor: order = open order, `active` = focused tab
@@ -77,7 +81,7 @@ function renderShell() {
   app.innerHTML = `
     <div class="titlebar">
       <div class="titlebar__dots"><span></span><span></span><span></span></div>
-      <div class="titlebar__label">${profile.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.dev — portfolio</div>
+      <div class="titlebar__label">${profile.siteTitle} — portfolio</div>
     </div>
 
     <div class="shell">
@@ -180,7 +184,7 @@ function renderAbout(): string {
   return `
     <div class="section-label" style="color:${sectionInfo("about").color}"># ~/about</div>
     <div class="about__header">
-      <img class="avatar" id="avatar-img" src="${profile.avatarUrl ?? ""}" alt="${profile.name}" />
+      <img class="avatar" id="avatar-img" src="${profile.avatarUrl ? publicUrl(profile.avatarUrl) : ""}" alt="${profile.name}" />
       <div>
         <h1 class="name">${profile.name}</h1>
         <div class="role-line">${profile.role}</div>
@@ -276,12 +280,13 @@ function renderExperience(): string {
 }
 
 function projectCard(p: ProjectEntry): string {
+  const langColor = p.language ? colorFor(p.language) : "var(--text-faint)";
   const meta = p.fork ? "fork" : p.stars ? `★ ${p.stars}` : p.language ?? "";
   return `
     <a class="card" href="${p.url}" target="_blank" rel="noopener" style="display:block">
       <div class="card__top">
-        <span class="card__title">${p.name}</span>
-        <span class="card__meta" style="color:${p.language ? colorFor(p.language) : "var(--text-faint)"}">${meta}</span>
+        <span class="card__title" style="color:${langColor}">${p.name}</span>
+        <span class="card__meta" style="color:${langColor}">${meta}</span>
       </div>
       <div class="card__desc">${p.description || "No description yet."}</div>
     </a>
@@ -347,7 +352,7 @@ function renderContact(): string {
       <li><span>email</span><a href="mailto:${profile.email}">${profile.email}</a></li>
       <li><span>github</span><a href="https://github.com/${profile.github}" target="_blank" rel="noopener">github.com/${profile.github}</a></li>
       <li><span>linkedin</span><a href="${profile.linkedin}" target="_blank" rel="noopener" title="${profile.linkedin}">${shortLinkedin(profile.linkedin)}</a></li>
-      ${profile.resumeUrl ? `<li><span>resume</span><a href="${profile.resumeUrl}" target="_blank" rel="noopener">download.pdf</a></li>` : ""}
+      ${profile.resumeUrl ? `<li><span>resume</span><a href="${publicUrl(profile.resumeUrl)}" target="_blank" rel="noopener">download.pdf</a></li>` : ""}
     </ul>
   `;
 }

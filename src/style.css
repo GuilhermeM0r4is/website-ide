@@ -338,7 +338,9 @@ h1.name {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  color: var(--text-bright);
 }
+.contact-list li a:hover { color: #ffffff; }
 
 /* ── Status bar ───────────────────────────────────────────────────── */
 
