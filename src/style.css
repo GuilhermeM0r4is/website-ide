@@ -32,6 +32,7 @@
 
 html, body {
   margin: 0;
+  overflow-x: hidden;
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-sans);
@@ -91,6 +92,7 @@ button { font-family: inherit; }
   background: var(--bg);
   padding: 16px 0;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .sidebar-resizer {
@@ -118,6 +120,7 @@ button { font-family: inherit; }
   align-items: center;
   gap: 9px;
   width: 100%;
+  min-width: 0; /* lets the row shrink below its text's natural width instead of forcing the sidebar wider */
   background: none;
   border: none;
   cursor: pointer;
@@ -126,6 +129,9 @@ button { font-family: inherit; }
   font-size: 13px;
   font-family: var(--font-mono);
   text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .file-row:hover { background: var(--bg-raised); color: var(--text); }
@@ -197,11 +203,46 @@ button { font-family: inherit; }
   padding: 40px 48px;
 }
 
+.sidebar-toggle {
+  display: none; /* only shown on mobile, see media query below */
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.sidebar-toggle:hover { background: var(--border); }
+.sidebar-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
 @media (max-width: 760px) {
   .shell { flex-direction: column; }
-  .sidebar { order: 0; width: 100% !important; border-bottom: 1px solid var(--border); display: flex; flex-wrap: wrap; padding: 10px; gap: 2px; }
+
+  .sidebar {
+    order: 0;
+    width: 100% !important;
+    border-bottom: 1px solid var(--border);
+    padding: 10px;
+  }
   .sidebar-resizer { display: none; }
   .sidebar__heading { display: none; }
+
+  .sidebar-toggle { display: flex; }
+
+  /* collapsed by default on mobile — the toggle adds "open" to reveal this */
+  .sidebar-body {
+    display: none;
+    flex-wrap: wrap;
+    gap: 2px;
+    padding-top: 10px;
+  }
+  .sidebar-body.open { display: flex; }
+
   .content { padding: 28px 20px; }
 }
 
@@ -299,8 +340,9 @@ h1.name {
 }
 
 .card__top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.card__top > div:first-child { min-width: 0; flex: 1; overflow-wrap: break-word; }
 .card__title { font-family: var(--font-mono); font-size: 14.5px; font-weight: 600; }
-.card__meta { color: var(--text-faint); font-size: 12px; font-family: var(--font-mono); white-space: nowrap; }
+.card__meta { flex-shrink: 0; color: var(--text-faint); font-size: 12px; font-family: var(--font-mono); white-space: nowrap; }
 .card__desc { color: var(--text-muted); font-size: 13.5px; margin-top: 6px; line-height: 1.5; }
 
 .exp-card .card__title { color: var(--text-bright); font-size: 15px; }
